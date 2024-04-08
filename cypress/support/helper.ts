@@ -1,7 +1,9 @@
  const businessUser = {
   email: Cypress.env('email'),
   pass: Cypress.env('pass'),
-  url: Cypress.env('url')
+  url: Cypress.env('url'),
+  regPage: Cypress.env('regPage')
 };
+
 
 export {businessUser}

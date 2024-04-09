@@ -63,7 +63,7 @@ describe('CB-006 Verify clients on page 2',()=>{
     })
 
 
-    it.only('should ', () => {
+    it('Verify client are not duplicated', () => {
         navbar.openBasePage()
         cy.intercept('POST','**/client/search').as('search')
         navbar.clients.should('exist')

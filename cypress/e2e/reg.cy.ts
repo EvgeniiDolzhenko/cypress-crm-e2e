@@ -13,8 +13,12 @@ describe('CB-004 Reg page inputs validation',()=>{
 })
 
 describe('CB-005 Reg page inputs error validation',()=>{
-    it('Verify error message Required,loginCompanyName input', () => {
+
+    beforeEach(()=>{
         cy.visit(businessUser.regPage)
+    })
+
+    it('Verify error message Required,loginCompanyName input', () => {
         regPage.loginCompanyName.should('exist')
             .type('Company Name')
             .clear()
@@ -23,7 +27,6 @@ describe('CB-005 Reg page inputs error validation',()=>{
             .and('have.css','color','rgb(255, 77, 79)')
     });
     it('Verify error message Required,firstName input', () => {
-        cy.visit(businessUser.regPage)
         regPage.regFirstName.should('exist')
             .type('Company Name')
             .clear()
@@ -32,7 +35,6 @@ describe('CB-005 Reg page inputs error validation',()=>{
             .and('have.css','color','rgb(255, 77, 79)')
     });
     it('Verify error message Required,lastName input', () => {
-        cy.visit(businessUser.regPage)
         regPage.regLastName.should('exist')
             .type('Company Name')
             .clear()
@@ -41,7 +43,6 @@ describe('CB-005 Reg page inputs error validation',()=>{
             .and('have.css','color','rgb(255, 77, 79)')
     });
     it('Verify error message Required,regLoginName input', () => {
-        cy.visit(businessUser.regPage)
         regPage.regLoginName.should('exist')
             .type('Company Name')
             .clear()
@@ -50,7 +51,6 @@ describe('CB-005 Reg page inputs error validation',()=>{
             .and('have.css','color','rgb(255, 77, 79)')
     });
     it('Verify error message Required,regPass input', () => {
-        cy.visit(businessUser.regPage)
         regPage.regPass.should('exist')
             .type('Company Name')
             .clear()
@@ -59,7 +59,6 @@ describe('CB-005 Reg page inputs error validation',()=>{
             .and('have.css','color','rgb(255, 77, 79)')
     });
     it('Verify error message Required for each field', () => {
-        cy.visit(businessUser.regPage)
         cy.get('input').each((inputs)=>{
             cy.wrap(inputs).should('exist')
                 .and('be.visible')

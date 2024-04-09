@@ -44,27 +44,8 @@ describe('CB-005 Create new client e2e positive',()=>{
         })
     });
 
-    after('delete client',function (){
-        let token : string
+    after('Delete client API',function (){
         const clientId = this.clientId
-        cy.request({
-            method:'POST',
-            url:businessUser.apiUrl+'/user/login',
-            body:{
-                email:businessUser.email,
-                password:businessUser.pass,
-            }
-        }).then((response)=>{
-            token = response.body.payload.token
-        }) .then(()=>{
-            console.log(token)
-            cy.request({
-                method:'DELETE',
-                url:businessUser.apiUrl+`/client/${clientId}`,
-                headers:{
-                    Authorization:token
-                }
-            })
-        })
+        cy.deleteClient(businessUser.email,businessUser.pass,clientId)
     })
 })

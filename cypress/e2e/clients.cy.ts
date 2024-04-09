@@ -91,11 +91,17 @@ describe('CB-007 Client mock',()=>{
         loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
     })
 
-    it.only('should ', () => {
+    it('Mock one client in searching ', () => {
         window.localStorage.setItem('token',Cypress.env('token'))
-        navbar.openBasePage()
-        cy.intercept('POST','**/client/search').as('search')
-        clientsPage.allClients.click()
-
+        cy.fixture('mockClients').then((mockClient)=>{
+            const id = mockClient.payload.items[0]._id;
+            navbar.openBasePage()
+            cy.intercept('POST','**/client/search',{fixture:"mockClients.json"}).as('search')
+            clientsPage.allClients.click()
+            cy.wait('@search')
+            cy.contains('a','Testing').should('exist')
+            cy.get('tbody').find('tr').should('have.length',1)
+            cy.get(`a[href="/v5/client/${id}"]`).should('exist')
+        })
     });
 })

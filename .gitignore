@@ -1,5 +1,5 @@
 .env
 /cypress.env.json
 /node_modules/
-
+cypress/fixtures/mockClients.json
 

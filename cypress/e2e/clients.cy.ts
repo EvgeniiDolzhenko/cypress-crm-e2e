@@ -1,6 +1,7 @@
 import {businessUser} from '../support/helper'
 import {loginPage} from "../pages/login.page";
 import {clientsPage} from "../pages/clients.page";
+import {navbar} from "../pages/navbar";
 import { faker } from '@faker-js/faker';
 const randomName = faker.person.fullName();
 const phone = faker.phone.number('##########')
@@ -17,9 +18,7 @@ describe('CB-005 Create new client e2e positive',()=>{
     })
 
     it('Verify creating new client', function () {
-        cy.intercept('**/user/auth').as('login')
-        cy.visit('/')
-        cy.wait('@login')
+        navbar.openBasePage()
         cy.get('[href="/v5/client"]').click()
         cy.intercept('POST','**/client/search').as('search')
         cy.contains('button','Create Client')
@@ -48,4 +47,41 @@ describe('CB-005 Create new client e2e positive',()=>{
         const clientId = this.clientId
         cy.deleteClient(businessUser.email,businessUser.pass,clientId)
     })
+})
+
+describe('CB-006 Verify clients on page 2',()=>{
+
+    const clientsPage1 = []
+    const clientsPage2 = []
+
+    before('Api login',()=>{
+        loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
+    })
+
+    beforeEach('Set token',()=>{
+        window.localStorage.setItem('token',Cypress.env('token'))
+    })
+
+
+    it.only('should ', () => {
+        navbar.openBasePage()
+        cy.intercept('POST','**/client/search').as('search')
+        navbar.clients.should('exist')
+            .click()
+        cy.wait('@search')
+        cy.get('tr td a').each((names)=>{
+            clientsPage1.push(names.text())
+        })
+        cy.get('body').then((body)=>{
+            if(body.find('[title="2"]').length > 0){
+                cy.get('[title="2"]').click()
+                cy.wait('@search')
+                cy.get('tr td a').each((names)=>{
+                    clientsPage2.push(names.text())
+                }).then(()=>{
+                    cy.wrap(clientsPage1).should('not.have.members',clientsPage2)
+                })
+            }
+        })
+    });
 })

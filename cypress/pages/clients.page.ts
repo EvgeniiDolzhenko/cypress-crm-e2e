@@ -8,5 +8,8 @@ class ClientsPage{
     get createClientButton(){
         return cy.get('[class="ant-drawer-content-wrapper"] [class="ant-btn ant-btn-primary"]')
     }
+    get allClients(){
+        return cy.get('[href="/v5/client"]')
+    }
 }
 export const clientsPage = new ClientsPage()

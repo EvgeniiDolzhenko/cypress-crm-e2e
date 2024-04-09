@@ -85,3 +85,17 @@ describe('CB-006 Verify clients on page 2',()=>{
         })
     });
 })
+describe('CB-007 Client mock',()=>{
+
+    before('Api login',()=>{
+        loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
+    })
+
+    it.only('should ', () => {
+        window.localStorage.setItem('token',Cypress.env('token'))
+        navbar.openBasePage()
+        cy.intercept('POST','**/client/search').as('search')
+        clientsPage.allClients.click()
+
+    });
+})

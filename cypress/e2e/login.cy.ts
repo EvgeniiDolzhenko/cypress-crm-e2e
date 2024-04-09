@@ -10,7 +10,7 @@ describe('e2e CB-001,success login', () => {
         cy.intercept('GET','**/user/auth').as('auth')
     })
   it('Verify positive login scenario', () => {
-    cy.visit('/')
+    cy.visit('/user/login')
     loginPage.email.type(businessUser.email)
     loginPage.pass.type(businessUser.pass)
     loginPage.submitButton.click()
@@ -29,7 +29,7 @@ describe('e2e Negative scenarios',()=>{
     })
 
     it('CB-002,incorrect email', () => {
-        cy.visit('/')
+        cy.visit('/user/login')
         loginPage.email.type(invalidEmail)
         loginPage.pass.type(businessUser.pass)
         loginPage.submitButton.click()
@@ -39,9 +39,8 @@ describe('e2e Negative scenarios',()=>{
             expect(response.statusCode).eq(400)
         })
     });
-
     it('CB-003,incorrect pass', () => {
-        cy.visit('/')
+        cy.visit('/user/login')
         loginPage.email.type(businessUser.email)
         loginPage.pass.type(invalidPass)
         loginPage.submitButton.click()

@@ -14,6 +14,8 @@
  --Working with local storage
 
  --API login
+ 
+ --Using fixtures files
 
- --.yml file for GitActions 
+ --Using intercepts
  

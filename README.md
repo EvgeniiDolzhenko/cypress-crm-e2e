@@ -5,7 +5,7 @@
 
  --Cypress commands
 
- --Mocking api cals
+ --Mocking api calls
 
  --E2E UI testing
 
@@ -17,5 +17,5 @@
  
  --Using fixtures files
 
- --Using intercepts
+ --Using intercepts for assertions and awaiting 
  

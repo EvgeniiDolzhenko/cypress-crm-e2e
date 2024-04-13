@@ -3,6 +3,7 @@ import {loginPage} from "../pages/login.page";
 import {navbar} from "../pages/navbar";
 import {vendorsPage} from "../pages/vendors.page";
 import { faker } from '@faker-js/faker';
+import {clientsPage} from "../pages/clients.page";
 const randomName = faker.person.fullName();
 
 describe('CB-008 Create vendor',()=>{
@@ -63,4 +64,26 @@ describe('CB-008 Create vendor',()=>{
         })
 
     })
+})
+
+describe('CB-009 Mocking vendor',()=>{
+
+    before('Api login',()=>{
+        loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
+    })
+
+    it('Mocking one vendor ', () => {
+        window.localStorage.setItem('token',Cypress.env('token'))
+        cy.fixture('mockVendors').then((mockVendor)=>{
+            const id = mockVendor.payload.items[0]._id;
+            navbar.openBasePage()
+            cy.intercept('POST','**/vendor/search',{fixture:"mockVendors.json"}).as('vendorSearch')
+            navbar.vendors.should('exist')
+                .click()
+            cy.wait('@vendorSearch')
+            cy.contains('a','Mock order name').should('exist')
+            cy.get('tbody').find('tr').should('have.length',1)
+            cy.get(`a[href="/v5/vendor/${id}"]`).should('exist')
+        })
+    });
 })

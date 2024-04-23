@@ -8,17 +8,16 @@ class RegPage{
     }
 
     get regLastName(){
-        return cy.get('#user_login_firstName')
+        return cy.get('#user_login_lastName')
     }
 
-    get regLoginName(){
+    get regLoginEmail(){
         return  cy.get('#user_login_email')
     }
 
     get regPass(){
         return cy.get('#user_login_password')
     }
-
 
 
 }

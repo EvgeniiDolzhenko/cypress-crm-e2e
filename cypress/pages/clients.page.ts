@@ -1,3 +1,5 @@
+import {businessUser} from "../support/helper";
+
 class ClientsPage{
     get clientName(){
         return  cy.get('[id="name"][class="ant-input"]')
@@ -10,6 +12,25 @@ class ClientsPage{
     }
     get allClients(){
         return cy.get('[href="/v5/client"]')
+    }
+
+    createNewClientApi(name:string, phone: string, email : string, description : string, token ){
+        return cy.request({
+            method: 'POST',
+            url: businessUser.apiUrl+'/client',
+            headers:{
+                Authorization: token
+            },
+            body:{
+                name,
+                phone,
+                email,
+                description
+            }
+        }).then((response)=>{
+            expect(response.body.payload).a('string')
+        })
+
     }
 }
 export const clientsPage = new ClientsPage()

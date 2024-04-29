@@ -17,5 +17,11 @@ class Navbar{
         cy.visit('/')
         cy.wait('@login')
     }
+
+    opetnClientsPage(){
+        cy.intercept('POST' ,'**/client/search').as('clients')
+        navbar.clients.click()
+        cy.wait('@clients')
+    }
 }
 export const navbar = new Navbar()

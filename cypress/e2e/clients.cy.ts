@@ -3,6 +3,7 @@ import {loginPage} from "../pages/login.page";
 import {clientsPage} from "../pages/clients.page";
 import {navbar} from "../pages/navbar";
 import { faker } from '@faker-js/faker';
+
 const randomName = faker.person.fullName();
 const phone = faker.phone.number('##########')
 
@@ -104,4 +105,20 @@ describe('CB-007 Client mock',()=>{
             cy.get(`a[href="/v5/client/${id}"]`).should('exist')
         })
     });
+})
+
+describe.only('CB-011 Create client API',()=>{
+
+
+    before('Api login and create client',()=>{
+        loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
+    })
+
+    it('Verify new client',()=>{
+        clientsPage.createNewClientApi(randomName,phone, 'emai@email.com','description',Cypress.env('token'))
+        window.localStorage.setItem('token',Cypress.env('token'))
+        navbar.openBasePage()
+        navbar.opetnClientsPage()
+
+    })
 })

@@ -1,5 +1,18 @@
 {
-  "name": "Using fixtures to represent data",
-  "email": "hello@cypress.io",
-  "body": "Fixtures are a great way to mock data for responses to routes"
+  "message": "VendorSearch",
+  "payload": {
+      "pager": {
+          "pageCurrent": 1
+      },
+      "items": [
+          {
+              "_id": "id",
+              "name": "Mock order name",
+              "owner": "id",
+              "companyAccount": "id",
+              "createdAt": "date",
+              "updatedAt": "date"
+          }
+      ]
+  }
 }

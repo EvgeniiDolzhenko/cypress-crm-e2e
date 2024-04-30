@@ -29,7 +29,7 @@ class ClientsPage{
             }
         }).then((response)=>{
             expect(response.body.payload).a('string')
-        })
+        }).then(cy.wrap<any>)
 
     }
 }

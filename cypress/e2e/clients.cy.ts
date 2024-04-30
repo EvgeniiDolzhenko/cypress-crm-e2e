@@ -4,11 +4,11 @@ import {clientsPage} from "../pages/clients.page";
 import {navbar} from "../pages/navbar";
 import { faker } from '@faker-js/faker';
 
-const randomName = faker.person.fullName();
-const phone = faker.phone.number('##########')
+
 
 describe('CB-005 Create new client e2e positive',()=>{
-
+    const randomName = faker.person.fullName();
+    const phone = faker.phone.number('##########')
     let clientId: string
     before('Api login',()=>{
         loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
@@ -107,8 +107,10 @@ describe('CB-007 Client mock',()=>{
     });
 })
 
-describe.only('CB-011 Create client API',()=>{
-
+describe('CB-011 Create client API',()=>{
+    const randomName = faker.person.fullName();
+    const phone = faker.phone.number('##########')
+    let clientId : string
 
     before('Api login and create client',()=>{
         loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
@@ -116,9 +118,15 @@ describe.only('CB-011 Create client API',()=>{
 
     it('Verify new client',()=>{
         clientsPage.createNewClientApi(randomName,phone, 'emai@email.com','description',Cypress.env('token'))
-        window.localStorage.setItem('token',Cypress.env('token'))
-        navbar.openBasePage()
-        navbar.opetnClientsPage()
-
+        .then((response)=>{
+            clientId = response.body.payload
+            window.localStorage.setItem('token',Cypress.env('token'))
+            navbar.openBasePage()
+            navbar.opetnClientsPage()
+            cy.get(`[href="/v5/client/${clientId}"]`).should('exist')
+            .click()
+            cy.contains('h1',randomName).should('exist')
+            cy.url().should('include',clientId)
+        })
     })
 })

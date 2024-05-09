@@ -37,8 +37,8 @@ describe('CB-014 Verify new Service e2e',()=>{
             expect(response.statusCode).eq(200)
             expect(response.body.message).eq('Service created')
             serviceId = response.body.payload
-
-            
+            cy.get(`[href="/v5/service/${serviceId}"]`).click()
+            cy.contains('h1',randomName).should('exist')
         })
     });
 })

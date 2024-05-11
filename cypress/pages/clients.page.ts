@@ -14,7 +14,7 @@ class ClientsPage{
         return cy.get('[href="/v5/client"]')
     }
 
-    createNewClientApi(name:string, phone: string, email : string, description : string, token ){
+    createNewClientApi(name:string, phone: string, email : string, description : string, token : string ){
         return cy.request({
             method: 'POST',
             url: businessUser.apiUrl+'/client',

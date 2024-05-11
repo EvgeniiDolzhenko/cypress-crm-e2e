@@ -18,4 +18,6 @@
  --Using fixtures files
 
  --Using intercepts for assertions and awaiting 
+
+ --Using Global Hook
  

@@ -19,13 +19,7 @@ describe('CB-008 Create vendor',()=>{
 
     it('Verify new vendor is created', function ()  {
         navbar.openBasePage()
-        cy.intercept('POST','**/vendor/search').as('vendor')
-        navbar.vendors.should('exist')
-            .click()
-        cy.wait('@vendor').its('response')
-            .then((response)=>{
-                expect(response.statusCode).eq(200)
-            })
+        navbar.goTo('vendors')
         vendorsPage.createVendorButton
             .should('exist')
             .click()
@@ -68,9 +62,6 @@ describe('CB-008 Create vendor',()=>{
 
 describe('CB-009 Mocking vendor',()=>{
 
-    before('Api login',()=>{
-        loginPage.apiLogin(businessUser.apiUrl,businessUser.email,businessUser.pass)
-    })
 
     it('Mocking one vendor ', () => {
         window.localStorage.setItem('token',Cypress.env('token'))
@@ -86,4 +77,34 @@ describe('CB-009 Mocking vendor',()=>{
             cy.get(`a[href="/v5/vendor/${id}"]`).should('exist')
         })
     });
+})
+
+describe('CD-019 Edit new vendor',()=>{
+    const randomName = faker.person.fullName();
+    const phone = faker.phone.number('##########')
+    let vendorId : string
+
+    beforeEach('Set token',()=>{
+        window.localStorage.setItem('token',Cypress.env('token'))
+    })
+
+    it('Create vendor API',()=>{
+        vendorsPage.createNewVendorApi(randomName,phone, 'emai@email.com','description',Cypress.env('token'))
+        .then((response)=>{
+            vendorId =  response.body.payload
+            window.localStorage.setItem('token',Cypress.env('token'))
+            navbar.openBasePage()
+            navbar.goTo('vendors')
+            cy.get(`[href="/v5/vendor/${vendorId}"]`).should('exist')
+                .click()
+            cy.contains('h1',randomName).should('exist')
+            navbar.vendors.click()
+            cy.get(`[href="/v5/vendor/${vendorId}"]`).should('exist')
+            cy.get(`[data-row-key="${vendorId}"]`).find('#top-menu span').trigger('mouseover')
+            cy.intercept('GET',`**/vendor/${vendorId}`).as('newVendor')
+            cy.contains('span','Edit').click()
+            cy.wait('@newVendor')
+            vendorsPage.vendorNameInput.should('have.value',randomName)
+        })
+    })
 })

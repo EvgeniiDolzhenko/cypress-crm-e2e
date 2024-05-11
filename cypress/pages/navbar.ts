@@ -33,5 +33,24 @@ class Navbar{
         this.services.click()
         cy.wait('@service')
     }
+
+    openVendors(){
+        cy.intercept('POST' ,'**/vendor/search').as('vendor')
+        this.vendors.click()
+        cy.wait('@vendor').its('response')
+        .then((response)=>{
+            expect(response.statusCode).eq(200)
+        })
+    }
+
+    goTo(page : string){
+        if(page==='vendors'){
+            this.openVendors()
+        } else if(page==='services'){
+            this.openServices
+        } else if(page==='clients'){
+            this.opetnClientsPage()
+        }
+    }
 }
 export const navbar = new Navbar()

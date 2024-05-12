@@ -20,4 +20,12 @@
  --Using intercepts for assertions and awaiting 
 
  --Using Global Hook
+
+ --Working with cypress variables and aliases 
+
+ --Exaple of using timeout
+
+ --Declaring cypress commands for autocomplete
+
+ --Using before/beforeEach/after hooks
  

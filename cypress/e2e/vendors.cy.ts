@@ -88,10 +88,11 @@ describe('CD-019 Edit new vendor',()=>{
         window.localStorage.setItem('token',Cypress.env('token'))
     })
 
-    it('Create vendor API',()=>{
+    it('Create vendor API and edit',function(){
         vendorsPage.createNewVendorApi(randomName,phone, 'emai@email.com','description',Cypress.env('token'))
         .then((response)=>{
             vendorId =  response.body.payload
+            cy.wrap(response.body.payload).as('vendorID')
             window.localStorage.setItem('token',Cypress.env('token'))
             navbar.openBasePage()
             navbar.goTo('vendors')
@@ -105,6 +106,23 @@ describe('CD-019 Edit new vendor',()=>{
             cy.contains('span','Edit').click()
             cy.wait('@newVendor')
             vendorsPage.vendorNameInput.should('have.value',randomName)
+            vendorsPage.vendorNameInput.clear()
+            cy.get('[class="ant-form-item-explain-error"]').should('exist')
+            .and('have.css','color','rgb(255, 77, 79)')
+            vendorsPage.vendorNameInput.type('new name')
+            cy.contains('span','Update').click()
+            cy.wait('@vendor')
+            cy.get(`[href="/v5/vendor/${vendorId}"]`).should('exist')
+            .click()
+            cy.wait('@newVendor')
+            cy.contains('h1',randomName).should('not.exist')
+            cy.contains('h1','new name').should('exist')
+
         })
+    })
+
+    after('Delete vendor API',function(){
+        const vendorID = this.vendorID
+        cy.deleteItem(businessUser.email,businessUser.pass,'vendor',vendorID)
     })
 })

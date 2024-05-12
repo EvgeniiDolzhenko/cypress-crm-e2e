@@ -1,6 +1,8 @@
 declare namespace Cypress {
     interface Chainable<Subject = any> {
-        // Example custom command to interact with a specific element
+        // Example of the command for deleting client 
         deleteClient(email: string, password: string,clientId:string): Chainable<any>;
+
+        deleteItem(email: string, password: string,endPoint: string,id: string): Chainable<any>;
     }
 }

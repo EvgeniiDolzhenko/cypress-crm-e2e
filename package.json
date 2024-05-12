@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "cy:open": "cypress open",
-    "cy:run": "cypress run",
+    "cy:run": "cypress run --browser chrome",
     "cy:run:cloud": "npx cypress run --record --key <KEY>",
     "lint":"prettier cypress/ --check",
     "format": "prettier cypress/ --write --list-different"

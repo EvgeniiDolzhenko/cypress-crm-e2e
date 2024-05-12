@@ -1,5 +1,4 @@
 import {businessUser} from '../support/helper'
-import {loginPage} from '../pages/login.page'
 import {clientsPage} from '../pages/clients.page'
 import {navbar} from '../pages/navbar'
 import {faker} from '@faker-js/faker'
@@ -8,9 +7,6 @@ describe('CB-005 Create new client e2e positive', () => {
   const randomName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let clientId: string
-  before('Api login', () => {
-    loginPage.apiLogin(businessUser.apiUrl, businessUser.email, businessUser.pass)
-  })
 
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
@@ -47,9 +43,6 @@ describe('CB-006 Verify clients on page 2', () => {
   const clientsPage1 = []
   const clientsPage2 = []
 
-  before('Api login', () => {
-    loginPage.apiLogin(businessUser.apiUrl, businessUser.email, businessUser.pass)
-  })
 
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
@@ -79,9 +72,6 @@ describe('CB-006 Verify clients on page 2', () => {
   })
 })
 describe('CB-007 Client mock', () => {
-  before('Api login', () => {
-    loginPage.apiLogin(businessUser.apiUrl, businessUser.email, businessUser.pass)
-  })
 
   it('Mock one client in searching ', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
@@ -102,10 +92,6 @@ describe('CB-011 Create client API', () => {
   const randomName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let clientId: string
-
-  before('Api login and create client', () => {
-    loginPage.apiLogin(businessUser.apiUrl, businessUser.email, businessUser.pass)
-  })
 
   it('Verify new client', () => {
     clientsPage

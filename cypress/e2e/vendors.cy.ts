@@ -79,10 +79,6 @@ describe('CD-019 Edit new vendor', () => {
   const phone = faker.phone.number('##########')
   let vendorId: string
 
-  beforeEach('Set token', () => {
-    window.localStorage.setItem('token', Cypress.env('token'))
-  })
-
   it('Create vendor API and edit', function () {
     vendorsPage
       .createNewVendorApi(randomName, phone, 'emai@email.com', 'description', Cypress.env('token'))

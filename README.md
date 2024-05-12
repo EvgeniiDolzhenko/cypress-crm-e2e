@@ -28,4 +28,6 @@
  --Declaring cypress commands for autocomplete
 
  --Using before/beforeEach/after hooks
+
+ --Using Prettier to format scripts
  

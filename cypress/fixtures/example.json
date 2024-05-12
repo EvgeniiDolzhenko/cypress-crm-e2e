@@ -1,18 +1,18 @@
 {
   "message": "VendorSearch",
   "payload": {
-      "pager": {
-          "pageCurrent": 1
-      },
-      "items": [
-          {
-              "_id": "id",
-              "name": "Mock order name",
-              "owner": "id",
-              "companyAccount": "id",
-              "createdAt": "date",
-              "updatedAt": "date"
-          }
-      ]
+    "pager": {
+      "pageCurrent": 1
+    },
+    "items": [
+      {
+        "_id": "id",
+        "name": "Mock order name",
+        "owner": "id",
+        "companyAccount": "id",
+        "createdAt": "date",
+        "updatedAt": "date"
+      }
+    ]
   }
 }

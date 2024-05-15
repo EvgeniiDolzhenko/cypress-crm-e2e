@@ -44,13 +44,15 @@ describe('CB-014 Verify new Service e2e', () => {
   })
 })
 
-describe('CB-021 Create new vendor for new service E2E', () => {
-  const randomName = faker.person.fullName()
+describe.only('CB-021 Create new vendor for new service E2E', () => {
+  const vendorName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let vendorId: string
+  let serviceId: string
   const clientPrice = Cypress._.random(1, 999).toString()
   const serviceName = faker.person.fullName()
   const vendorPrice = Cypress._.random(1, 999).toString()
+  
 
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
@@ -58,7 +60,7 @@ describe('CB-021 Create new vendor for new service E2E', () => {
 
   it('Create new vendor and new service with this vendor using API', function () {
     vendorsPage
-      .createNewVendorApi(randomName, phone, 'emai@email.com', 'description', Cypress.env('token'))
+      .createNewVendorApi(vendorName, phone, 'emai@email.com', 'description', Cypress.env('token'))
       .then(response => {
         vendorId = response.body.payload
       })
@@ -74,11 +76,22 @@ describe('CB-021 Create new vendor for new service E2E', () => {
           .then(response => {
             expect(response.body.message).eq('Service created')
             expect(response.status).eq(200)
+            serviceId = response.body.payload
+            cy.wrap(response.body.payload).as('serviceId')
           })
       })
   })
 
-  it('Verify new vendor with new service in UI',()=>{
+  it('Verify new vendor with new service in UI',function(){
+    const serviceId = this.serviceId
+    cy.visit('/service')
+    cy.get(`[href="/v5/service/${serviceId}"]`).should('exist')
+    cy.get(`[data-row-key="${serviceId}"]`).find('#top-menu span').trigger('mouseover')
+    cy.intercept('GET', `**/service/${serviceId}`).as('newService')
+    cy.contains('span', 'Edit').click()
+    cy.wait('@newService')
+    servicesPage.serviceName.should('have.value',serviceName)
+    cy.get('[class="ant-select-selection-item"]').should('have.prop','innerHTML',vendorName)
 
   })
 

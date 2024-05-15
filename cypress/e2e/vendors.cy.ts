@@ -71,7 +71,7 @@ describe('CB-009 Mocking vendor', () => {
   })
 })
 
-describe('CD-019 Edit new vendor', () => {
+describe('CB-019 Edit new vendor', () => {
   const randomName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let vendorId: string
@@ -113,3 +113,4 @@ describe('CD-019 Edit new vendor', () => {
     cy.deleteItem(businessUser.email, businessUser.pass, 'vendor', vendorID)
   })
 })
+

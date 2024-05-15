@@ -43,7 +43,6 @@ describe('CB-006 Verify clients on page 2', () => {
   const clientsPage1 = []
   const clientsPage2 = []
 
-
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
   })
@@ -72,7 +71,6 @@ describe('CB-006 Verify clients on page 2', () => {
   })
 })
 describe('CB-007 Client mock', () => {
-
   it('Mock one client in searching ', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
     cy.fixture('mockClients').then(mockClient => {

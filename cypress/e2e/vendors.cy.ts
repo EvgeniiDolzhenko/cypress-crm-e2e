@@ -3,14 +3,11 @@ import {loginPage} from '../pages/login.page'
 import {navbar} from '../pages/navbar'
 import {vendorsPage} from '../pages/vendors.page'
 import {faker} from '@faker-js/faker'
-import {clientsPage} from '../pages/clients.page'
+
 const randomName = faker.person.fullName()
 
 describe('CB-008 Create vendor', () => {
   let vendorId: string
-  before('Api login', () => {
-    loginPage.apiLogin(businessUser.apiUrl, businessUser.email, businessUser.pass)
-  })
 
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))

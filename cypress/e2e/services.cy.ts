@@ -1,16 +1,11 @@
-import {businessUser} from '../support/helper'
-import {loginPage} from '../pages/login.page'
 import {faker} from '@faker-js/faker'
 import {servicesPage} from '../pages/services.page'
+import {vendorsPage} from '../pages/vendors.page'
 import {navbar} from '../pages/navbar'
 
 describe('CB-014 Verify new Service e2e', () => {
   const randomName = faker.person.fullName()
   let serviceId: string
-
-  before('Api login', () => {
-    loginPage.apiLogin(businessUser.apiUrl, businessUser.email, businessUser.pass)
-  })
 
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
@@ -47,4 +42,44 @@ describe('CB-014 Verify new Service e2e', () => {
         cy.contains('h1', randomName).should('exist')
       })
   })
+})
+
+describe('CB-021 Create new vendor for new service E2E', () => {
+  const randomName = faker.person.fullName()
+  const phone = faker.phone.number('##########')
+  let vendorId: string
+  const clientPrice = Cypress._.random(1, 999).toString()
+  const serviceName = faker.person.fullName()
+  const vendorPrice = Cypress._.random(1, 999).toString()
+
+  beforeEach('Set token', () => {
+    window.localStorage.setItem('token', Cypress.env('token'))
+  })
+
+  it('Create new vendor and new service with this vendor using API', function () {
+    vendorsPage
+      .createNewVendorApi(randomName, phone, 'emai@email.com', 'description', Cypress.env('token'))
+      .then(response => {
+        vendorId = response.body.payload
+      })
+      .then(() => {
+        servicesPage
+          .createNewServiceApi(
+            vendorId,
+            clientPrice,
+            serviceName,
+            vendorPrice,
+            Cypress.env('token')
+          )
+          .then(response => {
+            expect(response.body.message).eq('Service created')
+            expect(response.status).eq(200)
+          })
+      })
+  })
+
+  it('Verify new vendor with new service in UI',()=>{
+
+  })
+
 })

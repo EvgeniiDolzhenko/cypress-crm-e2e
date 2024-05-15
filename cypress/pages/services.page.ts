@@ -1,3 +1,4 @@
+import {businessUser} from '../support/helper'
 class ServicesPage {
   get createService() {
     return cy.contains('button', 'Create Service')
@@ -25,6 +26,35 @@ class ServicesPage {
 
   get createServiceButton() {
     return cy.get('[class="ant-drawer-wrapper-body"] [class="ant-btn ant-btn-primary"]')
+  }
+
+  createNewServiceApi(
+    vendorId: string,
+    clientPrice: string,
+    serviceName: string,
+    vendorPrice: string,
+    token: string
+  ) {
+    {
+      return cy
+        .request({
+          method: 'POST',
+          url: businessUser.apiUrl + '/service',
+          headers: {
+            Authorization: token,
+          },
+          body: {
+            clientPrice: clientPrice,
+            name: serviceName,
+            vendor: vendorId,
+            vendorPrice: vendorPrice,
+          },
+        })
+        .then(response => {
+          expect(response.body.payload).a('string')
+        })
+        .then(cy.wrap<any>)
+    }
   }
 }
 export const servicesPage = new ServicesPage()

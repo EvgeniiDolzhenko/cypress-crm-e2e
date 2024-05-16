@@ -52,7 +52,7 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
   const clientPrice = Cypress._.random(1, 999).toString()
   const serviceName = faker.person.fullName()
   const vendorPrice = Cypress._.random(1, 999).toString()
-  
+
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
   })
@@ -81,7 +81,7 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
       })
   })
 
-  it('Verify new vendor with new service in UI',function(){
+  it('Verify new vendor with new service in UI', function () {
     const serviceId = this.serviceId
     navbar.openBasePage()
     navbar.goTo('services')
@@ -90,13 +90,12 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
     cy.intercept('GET', `**/service/${serviceId}`).as('newService')
     cy.contains('span', 'Edit').click()
     cy.wait('@newService')
-    servicesPage.serviceName.should('have.value',serviceName)
-    cy.get('[class="ant-select-selection-item"]').should('have.prop','innerHTML',vendorName)
+    servicesPage.serviceName.should('have.value', serviceName)
+    cy.get('[class="ant-select-selection-item"]').should('have.prop', 'innerHTML', vendorName)
   })
 
-  after('Delete vendor API', function () {
+  after('Delete service API', function () {
     const serviceId = this.serviceId
     cy.deleteItem(businessUser.email, businessUser.pass, 'service', serviceId)
   })
-
 })

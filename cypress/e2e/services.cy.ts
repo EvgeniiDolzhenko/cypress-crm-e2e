@@ -44,7 +44,7 @@ describe('CB-014 Verify new Service e2e', () => {
   })
 })
 
-describe.only('CB-021 Create new vendor for new service E2E', () => {
+describe('CB-021 Create new vendor for new service E2E', () => {
   const vendorName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let vendorId: string
@@ -84,7 +84,8 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
 
   it('Verify new vendor with new service in UI',function(){
     const serviceId = this.serviceId
-    cy.visit('/service')
+    navbar.openBasePage()
+    navbar.goTo('services')
     cy.get(`[href="/v5/service/${serviceId}"]`).should('exist')
     cy.get(`[data-row-key="${serviceId}"]`).find('#top-menu span').trigger('mouseover')
     cy.intercept('GET', `**/service/${serviceId}`).as('newService')
@@ -92,7 +93,6 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
     cy.wait('@newService')
     servicesPage.serviceName.should('have.value',serviceName)
     cy.get('[class="ant-select-selection-item"]').should('have.prop','innerHTML',vendorName)
-
   })
 
 })

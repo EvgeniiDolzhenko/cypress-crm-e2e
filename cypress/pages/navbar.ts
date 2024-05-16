@@ -47,7 +47,7 @@ class Navbar {
     if (page === 'vendors') {
       this.openVendors()
     } else if (page === 'services') {
-      this.openServices
+      this.openServices()
     } else if (page === 'clients') {
       this.opetnClientsPage()
     }

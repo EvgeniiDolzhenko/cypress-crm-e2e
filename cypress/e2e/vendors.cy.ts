@@ -113,4 +113,3 @@ describe('CB-019 Edit new vendor', () => {
     cy.deleteItem(businessUser.email, businessUser.pass, 'vendor', vendorID)
   })
 })
-

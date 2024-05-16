@@ -2,7 +2,7 @@ import {faker} from '@faker-js/faker'
 import {servicesPage} from '../pages/services.page'
 import {vendorsPage} from '../pages/vendors.page'
 import {navbar} from '../pages/navbar'
-
+import {businessUser} from '../support/helper'
 describe('CB-014 Verify new Service e2e', () => {
   const randomName = faker.person.fullName()
   let serviceId: string
@@ -44,7 +44,7 @@ describe('CB-014 Verify new Service e2e', () => {
   })
 })
 
-describe('CB-021 Create new vendor for new service E2E', () => {
+describe.only('CB-021 Create new vendor for new service E2E', () => {
   const vendorName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let vendorId: string
@@ -53,7 +53,6 @@ describe('CB-021 Create new vendor for new service E2E', () => {
   const serviceName = faker.person.fullName()
   const vendorPrice = Cypress._.random(1, 999).toString()
   
-
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
   })
@@ -93,6 +92,11 @@ describe('CB-021 Create new vendor for new service E2E', () => {
     cy.wait('@newService')
     servicesPage.serviceName.should('have.value',serviceName)
     cy.get('[class="ant-select-selection-item"]').should('have.prop','innerHTML',vendorName)
+  })
+
+  after('Delete vendor API', function () {
+    const serviceId = this.serviceId
+    cy.deleteItem(businessUser.email, businessUser.pass, 'service', serviceId)
   })
 
 })

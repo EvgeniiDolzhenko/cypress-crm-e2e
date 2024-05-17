@@ -2,7 +2,7 @@ import {faker} from '@faker-js/faker'
 import {servicesPage} from '../pages/services.page'
 import {vendorsPage} from '../pages/vendors.page'
 import {navbar} from '../pages/navbar'
-import {businessUser} from '../support/helper'
+import {businessUser, vieportSizes} from '../support/helper'
 describe('CB-014 Verify new Service e2e', () => {
   const randomName = faker.person.fullName()
   let serviceId: string
@@ -44,7 +44,7 @@ describe('CB-014 Verify new Service e2e', () => {
   })
 })
 
-describe.only('CB-021 Create new vendor for new service E2E', () => {
+describe('CB-021 Create new vendor for new service E2E', () => {
   const vendorName = faker.person.fullName()
   const phone = faker.phone.number('##########')
   let vendorId: string
@@ -52,6 +52,7 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
   const clientPrice = Cypress._.random(1, 999).toString()
   const serviceName = faker.person.fullName()
   const vendorPrice = Cypress._.random(1, 999).toString()
+  let serviceID: string
 
   beforeEach('Set token', () => {
     window.localStorage.setItem('token', Cypress.env('token'))
@@ -82,20 +83,38 @@ describe.only('CB-021 Create new vendor for new service E2E', () => {
   })
 
   it('Verify new vendor with new service in UI', function () {
-    const serviceId = this.serviceId
+    serviceID = this.serviceId
     navbar.openBasePage()
     navbar.goTo('services')
-    cy.get(`[href="/v5/service/${serviceId}"]`).should('exist')
-    cy.get(`[data-row-key="${serviceId}"]`).find('#top-menu span').trigger('mouseover')
-    cy.intercept('GET', `**/service/${serviceId}`).as('newService')
+    cy.get(`[href="/v5/service/${serviceID}"]`).should('exist')
+    cy.get(`[data-row-key="${serviceID}"]`).find('#top-menu span').trigger('mouseover')
+    cy.intercept('GET', `**/service/${serviceID}`).as('newService')
     cy.contains('span', 'Edit').click()
     cy.wait('@newService')
     servicesPage.serviceName.should('have.value', serviceName)
     cy.get('[class="ant-select-selection-item"]').should('have.prop', 'innerHTML', vendorName)
   })
 
+  it('Verify on mobile', () => {
+    navbar.openBasePage()
+    navbar.goTo('services')
+    cy.get(`[href="/v5/service/${serviceID}"]`).should('exist')
+    cy.get(`[data-row-key="${serviceID}"]`).find('#top-menu span').trigger('mouseover')
+    cy.intercept('GET', `**/service/${serviceID}`).as('newService')
+    cy.contains('span', 'Edit').click()
+    cy.wait('@newService')
+    vieportSizes.forEach(size => {
+      cy.viewport(size[0], size[1])
+      servicesPage.serviceName.should('have.value', serviceName)
+      cy.get('[class="ant-drawer-wrapper-body"] [class="ant-btn ant-btn-primary"]').should(
+        'have.css',
+        'background-color',
+        'rgb(78, 78, 145)'
+      )
+    })
+  })
+
   after('Delete service API', function () {
-    const serviceId = this.serviceId
-    cy.deleteItem(businessUser.email, businessUser.pass, 'service', serviceId)
+    cy.deleteItem(businessUser.email, businessUser.pass, 'service', serviceID)
   })
 })

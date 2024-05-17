@@ -6,4 +6,12 @@ const businessUser = {
   apiUrl: Cypress.env('apiUrl'),
 }
 
-export {businessUser}
+const vieportSizes = [
+  [1024, 768],
+  [667, 375],
+  [812, 375],
+  [896, 414],
+  [960, 1536],
+]
+
+export {businessUser, vieportSizes}

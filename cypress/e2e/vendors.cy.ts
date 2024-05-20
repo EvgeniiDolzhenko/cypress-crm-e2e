@@ -114,16 +114,15 @@ describe('CB-019 Edit new vendor', () => {
   })
 })
 
-describe('CB-021 Search by name',()=>{
-  
+describe('CB-021 Search by name', () => {
   const vendorName = faker.person.firstName()
   const phone = faker.phone.number('##########')
   let vendorId: string
 
-  it('Create new vendor',()=>{
+  it('Create new vendor', () => {
     vendorsPage
       .createNewVendorApi(vendorName, phone, 'emai@email.com', 'description', Cypress.env('token'))
-      .then((response)=>{
+      .then(response => {
         vendorId = response.body.payload
         cy.wrap(response.body.payload).as('vendorID')
         window.localStorage.setItem('token', Cypress.env('token'))
@@ -131,8 +130,7 @@ describe('CB-021 Search by name',()=>{
         navbar.goTo('vendors')
         vendorsPage.vendorSearch.type(vendorName)
         cy.wait('@vendor')
-        cy.get(`[data-row-key="${vendorId}"]`).should('exist')
-        .and('have.length',1)
+        cy.get(`[data-row-key="${vendorId}"]`).should('exist').and('have.length', 1)
       })
   })
 
@@ -141,7 +139,7 @@ describe('CB-021 Search by name',()=>{
     cy.deleteItem(businessUser.email, businessUser.pass, 'vendor', vendorID)
   })
 
-  it('Verify vendor deleted',function(){
+  it('Verify vendor deleted', function () {
     const vendorID = this.vendorID
     window.localStorage.setItem('token', Cypress.env('token'))
     navbar.openBasePage()
@@ -150,6 +148,4 @@ describe('CB-021 Search by name',()=>{
     cy.wait('@vendor')
     cy.get(`[data-row-key="${vendorID}"]`).should('not.exist')
   })
-
-
 })

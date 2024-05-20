@@ -13,7 +13,7 @@ class VendorsPage {
     return cy.get('[class="ant-drawer-content-wrapper"] [class="ant-btn ant-btn-primary"]')
   }
 
-  get vendorSearch(){
+  get vendorSearch() {
     return cy.get('#name')
   }
 

@@ -113,3 +113,43 @@ describe('CB-019 Edit new vendor', () => {
     cy.deleteItem(businessUser.email, businessUser.pass, 'vendor', vendorID)
   })
 })
+
+describe('CB-021 Search by name',()=>{
+  
+  const vendorName = faker.person.firstName()
+  const phone = faker.phone.number('##########')
+  let vendorId: string
+
+  it('Create new vendor',()=>{
+    vendorsPage
+      .createNewVendorApi(vendorName, phone, 'emai@email.com', 'description', Cypress.env('token'))
+      .then((response)=>{
+        vendorId = response.body.payload
+        cy.wrap(response.body.payload).as('vendorID')
+        window.localStorage.setItem('token', Cypress.env('token'))
+        navbar.openBasePage()
+        navbar.goTo('vendors')
+        vendorsPage.vendorSearch.type(vendorName)
+        cy.wait('@vendor')
+        cy.get(`[data-row-key="${vendorId}"]`).should('exist')
+        .and('have.length',1)
+      })
+  })
+
+  it('Delete vendor API', function () {
+    const vendorID = this.vendorID
+    cy.deleteItem(businessUser.email, businessUser.pass, 'vendor', vendorID)
+  })
+
+  it('Verify vendor deleted',function(){
+    const vendorID = this.vendorID
+    window.localStorage.setItem('token', Cypress.env('token'))
+    navbar.openBasePage()
+    navbar.goTo('vendors')
+    vendorsPage.vendorSearch.type(vendorName)
+    cy.wait('@vendor')
+    cy.get(`[data-row-key="${vendorID}"]`).should('not.exist')
+  })
+
+
+})

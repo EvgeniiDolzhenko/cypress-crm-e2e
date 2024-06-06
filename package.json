@@ -7,7 +7,7 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run --browser chrome",
     "cy:run:cloud": "npx cypress run --record --key <KEY>",
-    "lint":"prettier cypress/ --check",
+    "lint": "prettier cypress/ --check",
     "format": "prettier cypress/ --write --list-different"
   },
   "keywords": [],
@@ -16,6 +16,7 @@
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
     "cypress": "^13.7.2",
+    "eslint-plugin-cypress": "^3.3.0",
     "prettier": "3.2.5",
     "typescript": "^5.4.3"
   },

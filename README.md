@@ -36,5 +36,5 @@ Mobile wiew assertions.
 
 Please note that you won't be able to run this test suite as it was tailored for testing a friend's site, and I utilized a business account to cover some main functionalities.
 
-Thsnks.
+Thanks.
  

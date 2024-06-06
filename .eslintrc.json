@@ -1,0 +1,16 @@
+{
+    "plugins": ["cypress"],
+    "extends": [
+      "plugin:cypress/recommended"
+    ],
+    "rules": {
+      "enforceForClassFields": 0,
+      "lines-between-class-members": ["warn", "always",{ "exceptAfterSingleLine": true }],
+      "cypress/no-unnecessary-waiting": "off",
+      "cypress/unsafe-to-chain-command": "off",
+      "exceptAfterSingleLine": 0,
+      "no-console": "off",
+      "no-tabs": 0
+    }
+  }
+  

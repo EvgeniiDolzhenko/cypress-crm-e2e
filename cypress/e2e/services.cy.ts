@@ -118,4 +118,3 @@ describe('CB-021 Create new vendor for new service E2E', () => {
     cy.deleteItem(businessUser.email, businessUser.pass, 'service', serviceID)
   })
 })
-

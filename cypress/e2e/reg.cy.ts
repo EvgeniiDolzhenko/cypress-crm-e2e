@@ -2,6 +2,7 @@ import {businessUser} from '../support/helper'
 import {regPage} from '../pages/reg.page'
 import {faker} from '@faker-js/faker'
 describe('CB-004 Reg page inputs validation', () => {
+ 
   it('Verify inputs', () => {
     cy.visit(businessUser.regPage)
     regPage.loginCompanyName.should('exist')
@@ -60,5 +61,17 @@ describe('CB-011 Register new client E2E positive', () => {
       expect(newUser.response.statusCode).eq(201)
     })
     cy.url().should('contain', '/onboarding')
+  })
+})
+
+describe('Verify password field',()=>{
+  it('Verify eye-invisible',()=>{
+    cy.visit(businessUser.regPage)
+regPage.regPass.type('123')
+cy.get('[class="ant-form-item-feedback-icon ant-form-item-feedback-icon-success"]').should('exist')
+regPage.regLastName.type('test')
+regPage.regPass.should('have.prop','defaultValue','')
+cy.get('[data-icon="eye-invisible"]').click()
+regPage.regPass.should('have.prop','defaultValue','123')
   })
 })
